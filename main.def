@@ -1,0 +1,64 @@
+BootStrap: docker
+From: holbertonschool/ubuntu-1404-gcc5
+
+%post
+    # Using Chinese Source, You may need to delete these line
+    sudo sed -i "s@http://.*archive.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list
+    sudo sed -i "s@http://.*security.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list
+
+    
+
+    # Install tools
+    apt-get update -y && apt-get install -y zip cmake wget libboost-dev
+
+    # install conda
+    wget https://repo.anaconda.com/miniconda/Miniconda2-4.7.12-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh &&     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh &&     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc &&     echo "conda activate base" >> ~/.bashrc &&     find /opt/conda/ -follow -type f -name '*.a' -delete &&     find /opt/conda/ -follow -type f -name '*.js.map' -delete &&     /opt/conda/bin/conda clean -afy
+    export PATH=$PATH:/opt/conda/bin
+
+    # project space
+    export PROJECT_DIR=/project && mkdir -p $PROJECT_DIR && cd $PROJECT_DIR
+
+
+    # # Install eigen3 and move to /
+    wget https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip && \
+    unzip eigen-3.4.0.zip && \
+    rm -f eigen-3.4.0.zip && \
+    export PATH=$PATH:$PROJECT_DIR/eigen-3.4.0
+
+    # Install alps  AND compensate for the foolish dir written in conda/alps
+    conda config --add channels conda-forge && \
+    conda install alps && \
+    mkdir -p /opt/rh/devtoolset-2/root/usr/bin && \
+    ln -s /usr/bin/mpic++ /opt/rh/devtoolset-2/root/usr/bin/g++
+
+
+    # # Download Project
+    wget https://github.com/wangleiphy/SpinlesstV-LCT-INT/archive/refs/heads/PBC.zip && \
+    unzip PBC.zip && \
+    rm -f PBC.zip
+
+    # Place machine config file
+    export PATH=$PATH:/usr/include/mpi
+
+    # ---Build project---
+    cd $PROJECT_DIR/SpinlesstV-LCT-INT-PBC && \
+    echo "set(CMAKE_CXX_FLAGS -I$PROJECT_DIR/eigen-3.4.0 ${CMAKE_CXX_FLAGS})" >> ./src/config/main.cmake && \
+    mkdir -p build && \
+    cd build && \
+    cmake -DUSE_MACHINE=main -DCMAKE_INSTALL_PREFIX=../ -DCMAKE_BUILD_TYPE=Release ../src && \
+    make && make install
+
+%environment
+    export LC_ALL=C
+    export CXX=/usr/bin/g++
+    export PROJECT_DIR=/project
+    export CMAKE_PREFIX_PATH=/opt/conda:/project:/opt/conda/include/boost/
+
+%labels
+    MAINTAINER QiYang
+    OS_VERSION alpine
+    EIGEN_VERSION 3.4.0
+
+%runscript
