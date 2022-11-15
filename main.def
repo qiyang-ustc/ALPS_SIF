@@ -4,6 +4,10 @@ From: holbertonschool/ubuntu-1404-gcc5
 %post
     export PARALLEL_BUILD=36
 
+    # Using Chinese Source, You may need to delete these line
+    sudo sed -i "s@http://.*archive.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list
+    sudo sed -i "s@http://.*security.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list
+
     # Install tools
     apt-get update -y && apt-get install -y zip cmake wget libboost-dev build-essential gfortran cmake \
                         libhdf5-serial-dev libfftw3-dev gfortran python-matplotlib \
