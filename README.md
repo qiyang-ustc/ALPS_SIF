@@ -6,4 +6,6 @@ This repo contains singularity def file and old version source file to produce a
 
 Fully compiled from source code.
 
+You may need to modify the available source of Ubuntu to speed up in ```main.def```
+
 You may need to modify the first line of ```main.def``` : PARALLEL_BUILD=32 .
