@@ -2,7 +2,7 @@ BootStrap: docker
 From: holbertonschool/ubuntu-1404-gcc5
 
 %post
-    export PARALLEL_BUILD=1
+    export PARALLEL_BUILD=36
 
     # Install tools
     apt-get update -y && apt-get install -y zip cmake wget libboost-dev build-essential gfortran cmake \

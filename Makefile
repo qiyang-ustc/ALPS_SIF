@@ -1,11 +1,11 @@
-launch: alpine
-	sudo singularity exec --writable alpine sh
+launch: main
+	sudo singularity exec --writable main sh
 
-alpine: alpine.sif
-	sudo singularity build --sandbox alpine alpine.sif
+main: main.sif
+	sudo singularity build --sandbox main main.sif
 
-alpine.sif: main.def
-	sudo singularity build alpine.sif main.def 
+main.sif: main.def
+	sudo singularity build main.sif main.def 
 
 clear:
-	sudo rm -rf alpine alpine.sif
+	sudo rm -rf main main.sif
