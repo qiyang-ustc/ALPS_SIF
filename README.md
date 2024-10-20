@@ -2,9 +2,9 @@
 
 image online: 
 
-[Singularity](https://cloud.sylabs.io/library/qiyang/alps/alps)
+[Singularity](https://cloud.sylabs.io/library/qiyang/alps/alps): from `main.def`
 
-[Docker](https://hub.docker.com/r/qiyangcompphy/alps)
+[Docker](https://hub.docker.com/r/qiyangcompphy/alps): from `Dockerfile`
 
 **ALPS** is the (Algorithms and Libraries for Physics Simulations) project. Related to [ALPSCore](https://github.com/ALPSCore/ALPSCore).
 
